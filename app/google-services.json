@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "355778383648",
+    "firebase_url": "https://blindpro-7c6d0.firebaseio.com",
+    "project_id": "blindpro-7c6d0",
+    "storage_bucket": "blindpro-7c6d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355778383648:android:1bc092570c5c9893f29145",
+        "android_client_info": {
+          "package_name": "com.example.blindpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355778383648-jolbup287t7425sen8jfam3df4761sop.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.blindpro",
+            "certificate_hash": "e487166bde692859bfe5227c4b29ddf2c1c0801c"
+          }
+        },
+        {
+          "client_id": "355778383648-8i0bgr9elu8vrit4tf4fbb2u7me6nhh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAocb6_nAsvPkbq4Rvc3OOn4pkq76FcilA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355778383648-8i0bgr9elu8vrit4tf4fbb2u7me6nhh1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
