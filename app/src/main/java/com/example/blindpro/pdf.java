@@ -1,6 +1,5 @@
 package com.example.blindpro;
 
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,14 +27,20 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+//import android.support.annotation.NonNull;
+//import android.support.v4.content.ContextCompat;
+//import android.support.v7.app.AppCompatActivity;
+
 public class pdf extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String TAG = "TAG";
+    //this is the pic pdf code used in file chooser
     final static int PICK_PDF_CODE = 2342;
 
     //these are the views
     TextView textViewStatus;
     EditText editTextFilename;
-
+    ProgressBar progressBar;
 
     //the firebase objects for storage and database
     StorageReference mStorageReference;
@@ -45,7 +51,7 @@ public class pdf extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf2);
 
-        FirebaseApp.initializeApp(this);
+
         //getting firebase objects
         mStorageReference = FirebaseStorage.getInstance().getReference();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS);
@@ -53,10 +59,11 @@ public class pdf extends AppCompatActivity implements View.OnClickListener {
         //getting the views
         textViewStatus = (TextView) findViewById(R.id.textViewStatus);
         editTextFilename = (EditText) findViewById(R.id.editTextFileName);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
         //attaching listeners to views
         findViewById(R.id.buttonUploadFile).setOnClickListener(this);
-
+        findViewById(R.id.textViewUploads).setOnClickListener(this);
     }
 
     //this function will get the pdf from the storage
@@ -100,20 +107,30 @@ public class pdf extends AppCompatActivity implements View.OnClickListener {
     //the code is same as the previous tutorial
     //so we are not explaining it
     private void uploadFile(Uri data) {
-
+        progressBar.setVisibility(View.VISIBLE);
         StorageReference sRef = mStorageReference.child(Constants.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + ".pdf");
         sRef.putFile(data)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @SuppressWarnings("VisibleForTests")
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        textViewStatus.setText("File Uploaded Successfully");
+                        if (taskSnapshot.getMetadata() != null) {
+                            if (taskSnapshot.getMetadata().getReference() != null) {
+                                Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        String imageUrl = uri.toString();
 
-                        String url = taskSnapshot.getStorage().getDownloadUrl().toString();
-                        Upload upload = new Upload(editTextFilename.getText().toString(),url );
-                        mDatabaseReference.child(mDatabaseReference.push().getKey()).setValue(upload);
-                    }
-                })
+                                        textViewStatus.setText("File Uploaded Successfully");
+//                                        Log.d(TAG,""+taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+                                        Upload upload = new Upload(editTextFilename.getText().toString(),imageUrl);
+                                        mDatabaseReference.child(mDatabaseReference.push().getKey()).setValue(upload);
+                                        //createNewPost(imageUrl);
+                                    }
+                                });
+                            }
+                        }
+                    }})
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
@@ -137,7 +154,9 @@ public class pdf extends AppCompatActivity implements View.OnClickListener {
             case R.id.buttonUploadFile:
                 getPDF();
                 break;
-
+            case R.id.textViewUploads:
+                startActivity(new Intent(this, viewuploads.class));
+                break;
         }
     }
 }

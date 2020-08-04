@@ -1,5 +1,6 @@
 package com.example.blindpro;
 
+
 public class Upload {
 
     public String name;
@@ -23,3 +24,8 @@ public class Upload {
         return url;
     }
 }
+
+// textViewStatus.setText("File Uploaded Successfully");
+//         Log.d(TAG,""+taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+//         Upload upload = new Upload(editTextFilename.getText().toString(), taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+//         mDatabaseReference.child(mDatabaseReference.push().getKey()).setValue(upload);

@@ -88,7 +88,7 @@ public class vollogin extends AppCompatActivity {
                                         if(mail!=null&&password1!=null&& mail.equals(email) && password.equals(password1))
                                         {
                                             Log.d(TAG, "going to home");
-                                            startActivity(new Intent(vollogin.this,MainActivity.class));
+                                            startActivity(new Intent(vollogin.this,pdf.class));
                                         }
                                     }
                                 }
