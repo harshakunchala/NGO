@@ -93,10 +93,13 @@ public class pdf extends AppCompatActivity implements View.OnClickListener {
         //when the user choses the file
         if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             //if a file is selected
-            if (data.getData() != null) {
+            if (data.getData() != null)
+            {
                 //uploading the file
                 uploadFile(data.getData());
-            }else{
+            }
+            else
+                {
                 Toast.makeText(this, "No file chosen", Toast.LENGTH_SHORT).show();
             }
         }
